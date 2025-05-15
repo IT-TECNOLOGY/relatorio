@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatório de Estágio</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .form-section {
+        display: flex;
+        justify-content: center;
+        background: #c5ffc5;
+        padding: 20px;
+      }
+
+      .form-section h1,
+      .form-section h3 {
+        text-align: center;
+      }
+
+      .form-section input {
+        width: 80%;
+        margin: 5px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .print-page {
+        width: 210mm;
+        height: 297mm;
+        margin: 10px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        background: white;
+        page-break-after: always;
+      }
+
+      @media print {
+        .form-section,
+        .print-button {
+          display: none;
+        }
+
+        .print-page {
+          margin: 0;
+          border: none;
+          page-break-after: always;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="form-section">
+      <div class="container">
+        <h1>Informações dos Alunos para o Relatório</h1>
+        <div class="mb-3">
+          <h3>Nome do Estagiário</h3>
+          <input
+            id="nome"
+            type="text"
+            class="form-control"
+            placeholder="Digite o nome"
+          />
+        </div>
+        <div class="mb-3">
+          <h3>Matrícula</h3>
+          <input
+            id="matricula"
+            type="text"
+            class="form-control"
+            placeholder="Digite a matrícula"
+          />
+        </div>
+        <div class="mb-3">
+          <h3>Curso</h3>
+          <input
+            id="curso"
+            type="text"
+            class="form-control"
+            placeholder="Digite o curso"
+          />
+        </div>
+        <div class="mb-3">
+          <h3>Orientador de Estágio (IES)</h3>
+          <input
+            id="orientador"
+            type="text"
+            class="form-control"
+            placeholder="Digite o nome do orientador"
+          />
+        </div>
+        <div class="mb-3">
+          <h3>Empresa Concedente de Estágio</h3>
+          <input
+            id="empresa"
+            type="text"
+            class="form-control"
+            placeholder="Digite o nome da empresa"
+          />
+        </div>
+        <div class="mb-3">
+          <h3>Supervisor da Empresa</h3>
+          <input
+            id="supervisor"
+            type="text"
+            class="form-control"
+            placeholder="Digite o nome do supervisor"
+          />
+        </div>
+        <div class="mb-3">
+          <h3>Horário de Estágio</h3>
+          <input
+            id="horario"
+            type="text"
+            class="form-control"
+            placeholder="Digite o horário de estágio"
+          />
+        </div>
+        <div class="text-center mb-5">
+          <button onclick="window.print()" class="btn btn-primary print-button">
+            Imprimir Relatório
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Página 1 -->
+    <div class="print-page" id="page1">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <img
+          src="./logo-facape.png"
+          width="80px"
+          height="80px"
+          alt="Logo FACAPE"
+        />
+        <div style="text-align: center">
+          <h6 style="font-weight: bold">
+            AUTARQUIA EDUCACIONAL DO VALE DO SÃO FRANCISCO – AEVSF FACULDADE DE
+            PETROLINA – FACAPE
+            <br />
+            ESTÁGIO/BOLSA
+          </h6>
+          <p style="font-size: smaller">
+            Campus Universitário, s/n – Vila Eduardo – Petrolina/PE. CEP:
+            56328-903. <br />
+            Fone: 87-3866-3200, 3866-3213
+          </p>
+        </div>
+        <img
+          src="./prefeitura de petrolina.png"
+          width="80px"
+          height="80px"
+          alt="Logo Prefeitura"
+        />
+      </div>
+      <div style="font-size: small; margin-left: 35px; margin-right: 35px">
+        <p style="text-align: center">
+          <b> RELATÓRIO DE ACOMPANHAMENTO DE ESTÁGIO </b>
+        </p>
+        <div class="cabecalho">
+          <p>
+            <b>NOME DO ESTAGIÁRIO:</b> <span id="nome1"></span><b>MATRÍCULA:</b>
+            <span id="matricula1"></span>
+          </p>
+          <p>
+            <b>CURSO:</b> <span id="curso1"></span>&nbsp;<b
+              >ORIENTADOR DE ESTÁGIO (IES):</b
+            >
+            <span id="orientador1"></span>
+          </p>
+          <p>
+            <b>Empresa Concedente de Estágio:</b> <span id="empresa1"></span>
+          </p>
+          <p>
+            <b>Supervisor da Empresa:</b> <span id="supervisor1"></span>
+            <b>Horário de Estágio:</b> <span id="horario1"></span>
+          </p>
+        </div>
+        <br />
+        <b>A SER PREENCHIDO PELO SUPERVISOR DA EMPRESA</b>
+        <br />
+        <p>
+          <b
+            >1.Como você avalia o desempenho do estagiário nos seguintes
+            aspectos comportamentais:</b
+          >
+        </p>
+        <p>
+          <b
+            >1.1.Facilidade de compreensão (rapidez e facilidade de interpretar
+            e pôr em prática ou atender instruções e informações)</b
+          >
+        </p>
+        <table>
+          <tr>
+            <td><b>Ótimo</b></td>
+            <td></td>
+            <td><b>Bom</b></td>
+            <td></td>
+            <td><b>Regular</b></td>
+            <td></td>
+            <td><b>Ruim</b></td>
+            <td></td>
+          </tr>
+        </table>
+        <p><b>1.2.Assiduidade (frequência de estágio)</b></p>
+        <table>
+          <tr>
+            <td><b>Ótimo</b></td>
+            <td></td>
+            <td><b>Bom</b></td>
+            <td></td>
+            <td><b>Regular</b></td>
+            <td></td>
+            <td><b>Ruim</b></td>
+            <td></td>
+          </tr>
+        </table>
+        <p><b>1.3.Pontualidade (cumprimento do horário da organização)</b></p>
+        <table>
+          <tr>
+            <td><b>Ótimo</b></td>
+            <td></td>
+            <td><b>Bom</b></td>
+            <td></td>
+            <td><b>Regular</b></td>
+            <td></td>
+            <td><b>Ruim</b></td>
+            <td></td>
+          </tr>
+        </table>
+        <p><b>1.3.Pontualidade (cumprimento do horário da organização)</b></p>
+        <table>
+          <tr>
+            <td><b>Ótimo</b></td>
+            <td></td>
+            <td><b>Bom</b></td>
+            <td></td>
+            <td><b>Regular</b></td>
+            <td></td>
+            <td><b>Ruim</b></td>
+            <td></td>
+          </tr>
+        </table>
+        <p>
+          <b
+            >1.4.Cooperação(disposição para ajudar e/ou cooperar com os
+            colegas)</b
+          >
+        </p>
+        <table>
+          <tr>
+            <td><b>Ótimo</b></td>
+            <td></td>
+            <td><b>Bom</b></td>
+            <td></td>
+            <td><b>Regular</b></td>
+            <td></td>
+            <td><b>Ruim</b></td>
+            <td></td>
+          </tr>
+        </table>
+        <p>
+          <b
+            >2.Como você avalia o desempenho do estágio na execução das
+            atividades de estágio?</b
+          >
+        </p>
+        <table>
+          <tr>
+            <td><b>Ótimo</b></td>
+            <td></td>
+            <td><b>Bom</b></td>
+            <td></td>
+            <td><b>Regular</b></td>
+            <td></td>
+            <td><b>Ruim</b></td>
+            <td></td>
+          </tr>
+        </table>
+        <p>
+          <b
+            >3.O estágio em condição de desenvolver outras atividades mais
+            complexas?</b
+          >
+        </p>
+        <table>
+          <tr>
+            <td><b>Ótimo</b></td>
+            <td></td>
+            <td><b>Bom</b></td>
+            <td></td>
+            <td><b>Regular</b></td>
+            <td></td>
+            <td><b>Ruim</b></td>
+            <td></td>
+          </tr>
+        </table>
+        <p>
+          <b
+            >Você deseja incluir novas atividades para o estágio ,através da
+            confecção de um Termo aditivo ao Contrato, promovendo a
+            progressividade do estágio, para atender a Lei n°.11.788/08, no
+            parágrafo único do Art.7°?</b
+          >
+        </p>
+        <table>
+          <tr>
+            <td><b>Sim</b></td>
+            <td></td>
+            <td><b>Não</b></td>
+            <td></td>
+          </tr>
+        </table>
+        <br />
+        <p><b>Quais?</b></p>
+        <div style="border-bottom: 1px solid"></div>
+        <div style="border-bottom: 1px solid; margin-top: 23px"></div>
+        <b>DATA: ___/___/_____</b>
+        <br /><br /><br />
+        <div style="display: flex; justify-content: space-around">
+          <div style="border-bottom: 1px solid; width: 250px"></div>
+          <div style="border-bottom: 1px solid; width: 250px"></div>
+        </div>
+        <div style="display: flex; justify-content: space-around">
+          <div style="width: 147px">Assinatura do orientador</div>
+          <div style="width: 147px">Assinatura do supervisor</div>
+        </div>
+      </div>
+    </div>
+    <!-- Página 2 -->
+    <div class="print-page" id="page2">
+      <!-- Alterado de page1 para page2 -->
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <img
+          src="./logo-facape.png"
+          width="80px"
+          height="80px"
+          alt="Logo FACAPE"
+        />
+        <div style="text-align: center">
+          <h6 style="font-weight: bold">
+            AUTARQUIA EDUCACIONAL DO VALE DO SÃO FRANCISCO – AEVSF FACULDADE DE
+            PETROLINA – FACAPE
+            <br />
+            ESTÁGIO/BOLSA
+          </h6>
+          <p style="font-size: smaller">
+            Campus Universitário, s/n – Vila Eduardo – Petrolina/PE. CEP:
+            56328-903. <br />
+            Fone: 87-3866-3200, 3866-3213
+          </p>
+        </div>
+        <img
+          src="./prefeitura de petrolina.png"
+          width="80px"
+          height="80px"
+          alt="Logo Prefeitura"
+        />
+      </div>
+      <div style="font-size: small; margin-left: 35px; margin-right: 35px">
+        <div class="cabecalho">
+          <p style="text-align: center">
+            <b> RELATÓRIO DE ACOMPANHAMENTO DE ESTÁGIO </b>
+          </p>
+          <br />
+          <p>
+            <b>NOME DO ESTAGIÁRIO:</b> <span id="nome2"></span><b>MATRÍCULA:</b>
+            <span id="matricula2"></span>
+          </p>
+          <p>
+            <b>CURSO:</b> <span id="curso2"></span>&nbsp;<b
+              >Orientador de Estágio (IES):</b
+            >
+            <span id="orientador2"></span>
+          </p>
+          <p>
+            <b>Empresa Concedente de Estágio:</b> <span id="empresa2"></span>
+          </p>
+          <p>
+            <b>Supervisor da Empresa:</b> <span id="supervisor2"></span>
+            <b>Horário de Estágio:</b> <span id="horario2"></span>
+          </p>
+        </div>
+        <br />
+        <p>
+          <b>1.Descreva as principais atividades desenvolvidas no estágio:</b>
+        </p>
+        <div style="border-bottom: 1px solid"></div>
+        <div style="border-bottom: 1px solid; margin-top: 23px"></div>
+        <p>
+          <b
+            >2.O estágio tem proporcionado aquisição de novos conhecimentos e
+            experiências práticas importantes para sua formação? Quais?</b
+          >
+        </p>
+        <div style="border-bottom: 1px solid"></div>
+        <div style="border-bottom: 1px solid; margin-top: 23px"></div>
+        <p>
+          <b
+            >3.O ambiente de estágio é adequado para o desenvolvimento de suas
+            atividades ? Quais as dificuldades que você encontra no seu estágio
+            ?</b
+          >
+        </p>
+        <div style="border-bottom: 1px solid"></div>
+        <div style="border-bottom: 1px solid; margin-top: 23px"></div>
+        <p>
+          <b
+            >4.Como você descreveria a influência do estágio na sua vida
+            profissional e pessoal? ?</b
+          >
+        </p>
+        <div style="border-bottom: 1px solid"></div>
+        <div style="border-bottom: 1px solid; margin-top: 23px"></div>
+        <p>
+          <b
+            >5.Como o estágio está contribuindo para um melhor aproveitamento
+            escolar? (pode escolher mais de uma opção).</b
+          >
+        </p>
+        <p>
+          5.1.Cultivo bons relacionamentos com os colegas, professores e
+          dirigentes. ( )
+        </p>
+        <p>
+          5.2.Desenvolvi o hábito pela pesquisa e leitura de assuntos diversos,
+          inclusive de temas escolares. ( )
+        </p>
+        <p>
+          5.3.Compreendo com mais facilidade os conteúdos abordados em sala de
+          aula. ( )
+        </p>
+        <p>
+          <b
+            >6.O supervisor de estágio acompanha e esclarece dúvidas para que
+            você exerça da melhor forma possível as atividades descritas no seu
+            termo de compromisso de estágio? Como ele lhe auxilia nas suas
+            atividades?</b
+          >
+        </p>
+        <div style="border-bottom: 1px solid"></div>
+        <div style="border-bottom: 1px solid; margin-top: 23px"></div>
+        <p>
+          <b
+            >7.Como você se classifica atuando na empresa ? Classifique cada
+            quesito usando os indicadores de (1) para Baixa, (2) para regular e
+            (3) para Alta.
+          </b>
+        </p>
+        <table>
+          <tr>
+            <td style="width: 250px">Assiduidade</td>
+            <td style="width: 150px"></td>
+            <td style="width: 250px">Pontualidade</td>
+            <td style="width: 150px"></td>
+            <td style="width: 250px">Interesse</td>
+            <td style="width: 150px"></td>
+            <td style="width: 250px">Iniciativa</td>
+            <td style="width: 150px"></td>
+          </tr>
+          <tr>
+            <td style="width: 250px">Relacionamento</td>
+            <td style="width: 150px"></td>
+            <td style="width: 250px">Conhecimento</td>
+            <td style="width: 150px"></td>
+            <td style="width: 250px">Eficiência</td>
+            <td style="width: 150px"></td>
+          </tr>
+        </table>
+        <p style="margin-bottom: 24px">
+          <b>ESPAÇO RESERVADO PARA INFORMAÇÕES ADICIONAIS:</b>
+        </p>
+        <div style="border-bottom: 1px solid"></div>
+        <b>DATA: ___/___/_____</b>
+        <br /><br /><br />
+        <div style="display: flex; justify-content: space-around">
+          <div style="border-bottom: 1px solid; width: 250px"></div>
+          <div style="border-bottom: 1px solid; width: 250px"></div>
+        </div>
+        <div style="display: flex; justify-content: space-around">
+          <div style="width: 147px">Assinatura do orientador</div>
+          <div style="width: 147px">Assinatura do supervisor</div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      td {
+        padding: 5px;
+        border: 1px solid;
+        width: 57px;
+        height: 25px;
+      }
+      p {
+        margin-bottom: 13px;
+      }
+
+      .cabecalho p {
+        margin-bottom: -4px;
+      }
+    </style>
+
+    <script>
+      // Atualizar campos ao digitar
+      const updateField = (inputId, spanId) => {
+        document.getElementById(inputId).addEventListener("input", function () {
+          document.getElementById(spanId).textContent = this.value;
+        });
+      };
+
+      updateField("nome", "nome1");
+      updateField("nome", "nome2");
+      updateField("matricula", "matricula1");
+      updateField("matricula", "matricula2");
+      updateField("curso", "curso1");
+      updateField("curso", "curso2");
+      updateField("orientador", "orientador1");
+      updateField("orientador", "orientador2");
+      updateField("empresa", "empresa1");
+      updateField("empresa", "empresa2");
+      updateField("supervisor", "supervisor1");
+      updateField("supervisor", "supervisor2");
+      updateField("horario", "horario1");
+      updateField("horario", "horario2");
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
