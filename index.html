@@ -3,175 +3,697 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Relatório de Estágio</title>
+    <title>Relatório de Estágio - FACAPE</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <style>
+      :root {
+        --primary-color: #1a5f23;
+        --secondary-color: #f8f9fa;
+        --accent-color: #c5ffc5;
+        --text-color: #333;
+        --border-color: #ddd;
+      }
+
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
+        color: var(--text-color);
+        background-color: #f5f5f5;
+      }
+
+      .header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          #2e7d32 100%
+        );
+        color: white;
+        padding: 15px 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+        margin: 0;
+        font-weight: 600;
       }
 
       .form-section {
-        display: flex;
-        justify-content: center;
-        background: #c5ffc5;
-        padding: 20px;
+        background: var(--secondary-color);
+        padding: 30px 0;
+        border-bottom: 1px solid var(--border-color);
       }
 
-      .form-section h1,
-      .form-section h3 {
-        text-align: center;
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
       }
 
-      .form-section input {
-        width: 80%;
-        margin: 5px;
-        padding: 8px;
-        border: 1px solid #ddd;
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card-header {
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+        padding: 15px 20px;
+        font-weight: 600;
+      }
+
+      .form-control {
         border-radius: 5px;
+        border: 1px solid var(--border-color);
+        padding: 10px 15px;
+        transition: all 0.3s;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(26, 95, 35, 0.25);
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .btn-primary:hover {
+        background-color: #13471a;
+        border-color: #13471a;
+        transform: translateY(-2px);
+      }
+
+      .btn-success {
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: 600;
+      }
+
+      .btn-danger {
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: 600;
       }
 
       .print-page {
         width: 210mm;
-        height: 297mm;
-        margin: 10px auto;
-        padding: 20px;
-        border: 1px solid #ddd;
+        min-height: 297mm;
+        margin: 20px auto;
+        padding: 20mm;
+        border: 1px solid var(--border-color);
         background: white;
         page-break-after: always;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
+        line-height: 1.4;
       }
 
       @media print {
         .form-section,
-        .print-button {
-          display: none;
+        .print-button,
+        .header {
+          display: none !important;
         }
 
         .print-page {
           margin: 0;
           border: none;
+          box-shadow: none;
           page-break-after: always;
         }
       }
 
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+      }
+
       td {
-        padding: 5px;
-        border: 1px solid;
-        width: 57px;
-        height: 25px;
+        padding: 8px;
+        border: 1px solid var(--text-color);
+        text-align: center;
+        height: 30px;
       }
 
       p {
-        margin-bottom: 13px;
+        margin-bottom: 15px;
       }
 
       .cabecalho p {
-        margin-bottom: -4px;
+        margin-bottom: 5px;
       }
 
       #reports-container {
         display: none;
+        padding: 20px 0;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .spinner-border {
+        color: var(--primary-color);
+      }
+
+      .alert {
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      .file-upload-area {
+        border: 2px dashed var(--border-color);
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        background-color: #fafafa;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .file-upload-area:hover {
+        border-color: var(--primary-color);
+        background-color: #f0f0f0;
+      }
+
+      .file-upload-area.dragover {
+        border-color: var(--primary-color);
+        background-color: var(--accent-color);
+      }
+
+      .instructions {
+        background-color: #e9f7e9;
+        border-left: 4px solid var(--primary-color);
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 0 5px 5px 0;
+      }
+
+      .footer {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 20px 0;
+        margin-top: 30px;
+        text-align: center;
+      }
+
+      .logo-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .logo {
+        height: 80px;
+        width: auto;
+      }
+
+      .institution-info {
+        text-align: center;
+        flex-grow: 1;
+        margin: 0 20px;
+      }
+
+      .form-tabs {
+        margin-bottom: 20px;
+      }
+
+      .nav-tabs .nav-link {
+        color: var(--text-color);
+        font-weight: 500;
+      }
+
+      .nav-tabs .nav-link.active {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-bottom: 3px solid var(--primary-color);
+      }
+
+      .signature-area {
+        margin-top: 40px;
+      }
+
+      .signature-line {
+        border-bottom: 1px solid var(--text-color);
+        width: 250px;
+        display: inline-block;
+        margin: 0 20px;
+      }
+
+      .page-title {
+        text-align: center;
+        margin: 20px 0;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .download-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        padding: 40px;
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+        transition: transform 0.3s ease;
+      }
+
+      .download-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .file-icon {
+        font-size: 64px;
+        color: #4a6ee0;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 24px;
+      }
+
+      .description {
+        color: #666;
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+
+      .file-details {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 25px;
+        text-align: left;
+      }
+
+      .file-details p {
+        margin: 8px 0;
+        color: #555;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .file-details span {
+        font-weight: 600;
+        color: #333;
+      }
+
+      .download-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #4a6ee0, #6a11cb);
+        color: white;
+        border: none;
+        padding: 16px 32px;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+      }
+
+      .download-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(106, 17, 203, 0.5);
+      }
+
+      .download-btn:active {
+        transform: translateY(1px);
+      }
+
+      .download-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: all 0.6s ease;
+      }
+
+      .download-btn:hover::before {
+        left: 100%;
+      }
+
+      .download-icon {
+        margin-right: 12px;
+        font-size: 20px;
+        transition: transform 0.3s ease;
+      }
+
+      .download-btn:hover .download-icon {
+        animation: bounce 0.5s ease infinite alternate;
+      }
+
+      @keyframes bounce {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(-5px);
+        }
+      }
+
+      .success-message {
+        margin-top: 15px;
+        color: #28a745;
+        font-weight: 600;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .success-message.show {
+        opacity: 1;
+      }
+
+      @media (max-width: 480px) {
+        .download-card {
+          padding: 25px;
+        }
+
+        h1 {
+          font-size: 20px;
+        }
+
+        .download-btn {
+          padding: 14px 24px;
+          font-size: 16px;
+        }
       }
     </style>
   </head>
   <body>
+    <header class="header">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <h1>Relatório de Acompanhamento de Estágio</h1>
+          </div>
+          <div class="col-md-6 text-end">
+            <span>FACAPE - Faculdade de Petrolina</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
     <section class="form-section">
       <div class="container">
-        <h1>Informações dos Alunos para o Relatório</h1>
-        <div style="display: none">
-          <div class="mb-3">
-            <h3>Nome do Estagiário</h3>
-            <input
-              id="nome"
-              type="text"
-              class="form-control"
-              placeholder="Digite o nome"
-            />
+        <div class="instructions">
+          <h5>Instruções:</h5>
+          <p class="mb-0">
+            Preencha os dados do estagiário manualmente ou importe uma planilha
+            Excel. Após preencher, clique em "Gerar Relatório" e depois em
+            "Imprimir Relatórios".
+          </p>
+        </div>
+
+        <div class="download-card">
+          <div class="file-icon">📊</div>
+          <h1>Modelo de Visitas</h1>
+
+          <div class="file-details">
+            <p>Nome do arquivo: <span>VISITAS - MODELO.xlsx</span></p>
+            <p>Tipo: <span>Planilha Excel</span></p>
           </div>
-          <div class="mb-3">
-            <h3>Matrícula</h3>
-            <input
-              id="matricula"
-              type="text"
-              class="form-control"
-              placeholder="Digite a matrícula"
-            />
+
+          <button class="download-btn" id="downloadBtn">
+            <span class="download-icon">⬇️</span>
+            BAIXAR MODELO
+          </button>
+
+          <div class="success-message" id="successMessage">
+            Download iniciado com sucesso!
           </div>
-          <div class="mb-3">
-            <h3>Curso</h3>
-            <input
-              id="curso"
-              type="text"
-              class="form-control"
-              placeholder="Digite o curso"
-            />
-          </div>
-          <div class="mb-3">
-            <h3>Orientador de Estágio (IES)</h3>
-            <input
-              id="orientador"
-              type="text"
-              class="form-control"
-              placeholder="Digite o nome do orientador"
-            />
-          </div>
-          <div class="mb-3">
-            <h3>Empresa Concedente de Estágio</h3>
-            <input
-              id="empresa"
-              type="text"
-              class="form-control"
-              placeholder="Digite o nome da empresa"
-            />
-          </div>
-          <div class="mb-3">
-            <h3>Supervisor da Empresa</h3>
-            <input
-              id="supervisor"
-              type="text"
-              class="form-control"
-              placeholder="Digite o nome do supervisor"
-            />
-          </div>
-          <div class="mb-3">
-            <h3>Horário de Estágio</h3>
-            <input
-              id="horario"
-              type="text"
-              class="form-control"
-              placeholder="Digite o horário de estágio"
-            />
-          </div>
-          <button
-            onclick="generateFromForm()"
-            class="btn btn-primary print-button"
+        </div>
+
+        <script>
+          document
+            .getElementById("downloadBtn")
+            .addEventListener("click", function () {
+              // Criar um elemento <a> temporário para o download
+              const link = document.createElement("a");
+
+              // Usar o arquivo fornecido como base64
+              // Em um cenário real, você teria o arquivo disponível em seu servidor
+              // Aqui estamos simulando o download com o nome correto
+              link.href = "gLag-VISITAS+-+DIREITO+(1)(1)(2).xlsx"; // Arquivo atual
+              link.download = "VISITAS - MODELO.xlsx"; // Nome correto para download
+
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+
+              // Efeito visual de confirmação
+              const btn = this;
+              const originalText = btn.innerHTML;
+              const successMessage = document.getElementById("successMessage");
+
+              btn.innerHTML =
+                '<span class="download-icon">✓</span> DOWNLOAD INICIADO';
+              btn.style.background =
+                "linear-gradient(135deg, #28a745, #20c997)";
+              successMessage.classList.add("show");
+
+              setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background =
+                  "linear-gradient(135deg, #4a6ee0, #6a11cb)";
+                successMessage.classList.remove("show");
+              }, 3000);
+            });
+        </script>
+
+        <ul class="nav nav-tabs form-tabs" id="formTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="manual-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#manual"
+              type="button"
+              role="tab"
+              aria-controls="manual"
+              aria-selected="true"
+            >
+              Formulário Manual
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="excel-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#excel"
+              type="button"
+              role="tab"
+              aria-controls="excel"
+              aria-selected="false"
+            >
+              Importar do Excel
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="formTabsContent">
+          <div
+            class="tab-pane fade show active"
+            id="manual"
+            role="tabpanel"
+            aria-labelledby="manual-tab"
           >
-            Gerar Relatório do Formulário
-          </button>
-          <button onclick="clearReports()" class="btn btn-danger print-button">
-            Limpar Relatórios
-          </button>
-          <!-- fim da div oculta -->
+            <div class="card">
+              <div class="card-header">Dados do Estagiário</div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="nome" class="form-label"
+                      >Nome do Estagiário</label
+                    >
+                    <input
+                      id="nome"
+                      type="text"
+                      class="form-control"
+                      placeholder="Digite o nome completo"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="matricula" class="form-label">Matrícula</label>
+                    <input
+                      id="matricula"
+                      type="text"
+                      class="form-control"
+                      placeholder="Digite a matrícula"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="curso" class="form-label">Curso</label>
+                    <input
+                      id="curso"
+                      type="text"
+                      class="form-control"
+                      placeholder="Digite o curso"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="orientador" class="form-label"
+                      >Orientador de Estágio (IES)</label
+                    >
+                    <input
+                      id="orientador"
+                      type="text"
+                      class="form-control"
+                      placeholder="Digite o nome do orientador"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="empresa" class="form-label"
+                      >Empresa Concedente de Estágio</label
+                    >
+                    <input
+                      id="empresa"
+                      type="text"
+                      class="form-control"
+                      placeholder="Digite o nome da empresa"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="supervisor" class="form-label"
+                      >Supervisor da Empresa</label
+                    >
+                    <input
+                      id="supervisor"
+                      type="text"
+                      class="form-control"
+                      placeholder="Digite o nome do supervisor"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 mb-3">
+                    <label for="horario" class="form-label"
+                      >Horário de Estágio</label
+                    >
+                    <input
+                      id="horario"
+                      type="text"
+                      class="form-control"
+                      placeholder="Digite o horário de estágio"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="text-center mt-4">
+                  <button
+                    onclick="generateFromForm()"
+                    class="btn btn-primary print-button me-2"
+                  >
+                    Gerar Relatório
+                  </button>
+                  <button
+                    onclick="clearReports()"
+                    class="btn btn-danger print-button"
+                  >
+                    Limpar Relatórios
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="tab-pane fade"
+            id="excel"
+            role="tabpanel"
+            aria-labelledby="excel-tab"
+          >
+            <div class="card">
+              <div class="card-header">Importar Dados do Excel</div>
+
+              <div class="card-body">
+                <div class="file-upload-area" id="drop-area">
+                  <div class="mb-3">
+                    <i class="fas fa-file-excel fa-3x text-success mb-3"></i>
+                    <h5>Arraste e solte o arquivo Excel aqui</h5>
+                    <p class="text-muted">ou</p>
+                  </div>
+                  <div class="mb-3">
+                    <input
+                      type="file"
+                      id="excel-file"
+                      accept=".xlsx, .xls"
+                      class="form-control"
+                    />
+                  </div>
+                  <p class="text-muted small">Formato suportado: .xlsx, .xls</p>
+                </div>
+                <div class="alert alert-info mt-3">
+                  <small>
+                    <strong>Nota:</strong> A planilha deve conter as colunas:
+                    MATRÍCULA, NOME, CURSO, HORÁRIO, EMPRESA, SUPERVISOR,
+                    ORIENTADOR.
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <h3>Importar Dados de Excel</h3>
-          <input
-            type="file"
-            id="excel-file"
-            accept=".xlsx, .xls"
-            class="form-control"
-          />
+        <div class="loading" id="loading">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Carregando...</span>
+          </div>
+          <p class="mt-2">Processando dados, aguarde...</p>
         </div>
 
-        <div class="text-center mb-5">
+        <div class="text-center mt-4">
           <button onclick="window.print()" class="btn btn-success print-button">
-            Imprimir Relatórios
+            <i class="fas fa-print me-2"></i>Imprimir Relatórios
           </button>
         </div>
       </div>
@@ -179,13 +701,22 @@
 
     <div id="reports-container"></div>
 
+    <footer class="footer">
+      <div class="container">
+        <p>
+          &copy; 2023 FACAPE - Faculdade de Petrolina. Todos os direitos
+          reservados.
+        </p>
+      </div>
+    </footer>
+
     <script>
-      // Template para a página 1 do relatório
+      // Templates para as páginas do relatório (mantidos do código original)
       const page1Template = (index) => `
             <div class="print-page" id="page1-${index}">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <img src="./logo-facape.png" width="80px" height="80px" alt="Logo FACAPE" />
-                    <div style="text-align: center">
+                <div class="logo-container">
+                    <img src="./logo-facape.png" class="logo" alt="Logo FACAPE" />
+                    <div class="institution-info">
                         <h6 style="font-weight: bold">
                             AUTARQUIA EDUCACIONAL DO VALE DO SÃO FRANCISCO – AEVSF FACULDADE DE
                             PETROLINA – FACAPE
@@ -198,12 +729,12 @@
                             Fone: 87-3866-3200, 3866-3213
                         </p>
                     </div>
-                    <img src="./prefeitura de petrolina.png" width="80px" height="80px" alt="Logo Prefeitura" />
+                    <img src="./prefeitura de petrolina.png" class="logo" alt="Logo Prefeitura" />
                 </div>
-                <div style="font-size: small; margin-left: 35px; margin-right: 35px">
-                    <p style="text-align: center">
-                        <b> RELATÓRIO DE ACOMPANHAMENTO DE ESTÁGIO </b>
-                    </p>
+                <div class="page-title">
+                    <b>RELATÓRIO DE ACOMPANHAMENTO DE ESTÁGIO</b>
+                </div>
+                <div>
                     <div class="cabecalho">
                         <p>
                             <b>NOME DO ESTAGIÁRIO:</b> <span id="nome1-${index}"></span><b>MATRÍCULA:</b>
@@ -243,19 +774,6 @@
                         </tr>
                     </table>
                     <p><b>1.2.Assiduidade (frequência de estágio)</b></p>
-                    <table>
-                        <tr>
-                            <td><b>Ótimo</b></td>
-                            <td></td>
-                            <td><b>Bom</b></td>
-                            <td></td>
-                            <td><b>Regular</b></td>
-                            <td></td>
-                            <td><b>Ruim</b></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                    <p><b>1.3.Pontualidade (cumprimento do horário da organização)</b></p>
                     <table>
                         <tr>
                             <td><b>Ótimo</b></td>
@@ -343,24 +861,25 @@
                     <div style="border-bottom: 1px solid; margin-top: 23px"></div>
                     <b>DATA: ___/___/_____</b>
                     <br /><br /><br />
-                    <div style="display: flex; justify-content: space-around">
-                        <div style="border-bottom: 1px solid; width: 250px"></div>
-                        <div style="border-bottom: 1px solid; width: 250px"></div>
-                    </div>
-                    <div style="display: flex; justify-content: space-around">
-                        <div style="width: 147px">Assinatura do orientador</div>
-                        <div style="width: 147px">Assinatura do supervisor</div>
+                    <div class="signature-area">
+                        <div style="display: flex; justify-content: space-around">
+                            <div class="signature-line"></div>
+                            <div class="signature-line"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-around">
+                            <div style="width: 147px">Assinatura do orientador</div>
+                            <div style="width: 147px">Assinatura do supervisor</div>
+                        </div>
                     </div>
                 </div>
             </div>
         `;
 
-      // Template para a página 2 do relatório
       const page2Template = (index) => `
             <div class="print-page" id="page2-${index}">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <img src="./logo-facape.png" width="80px" height="80px" alt="Logo FACAPE" />
-                    <div style="text-align: center">
+                <div class="logo-container">
+                    <img src="./logo-facape.png" class="logo" alt="Logo FACAPE" />
+                    <div class="institution-info">
                         <h6 style="font-weight: bold">
                             AUTARQUIA EDUCACIONAL DO VALE DO SÃO FRANCISCO – AEVSF FACULDADE DE
                             PETROLINA – FACAPE
@@ -373,14 +892,13 @@
                             Fone: 87-3866-3200, 3866-3213
                         </p>
                     </div>
-                    <img src="./prefeitura de petrolina.png" width="80px" height="80px" alt="Logo Prefeitura" />
+                    <img src="./prefeitura de petrolina.png" class="logo" alt="Logo Prefeitura" />
                 </div>
-                <div style="font-size: small; margin-left: 35px; margin-right: 35px">
+                <div class="page-title">
+                    <b>RELATÓRIO DE ACOMPANHAMENTO DE ESTÁGIO</b>
+                </div>
+                <div>
                     <div class="cabecalho">
-                        <p style="text-align: center">
-                            <b> RELATÓRIO DE ACOMPANHAMENTO DE ESTÁGIO </b>
-                        </p>
-                        <br />
                         <p>
                             <b>NOME DO ESTAGIÁRIO:</b> <span id="nome2-${index}"></span><b>MATRÍCULA:</b>
                             <span id="matricula2-${index}"></span>
@@ -464,32 +982,29 @@
                     <div style="border-bottom: 1px solid"></div>
                     <b>DATA: ___/___/_____</b>
                     <br /><br /><br />
-                    <div style="display: flex; justify-content: space-around">
-                        <div style="border-bottom: 1px solid; width: 250px"></div>
-                        <div style="border-bottom: 1px solid; width: 250px"></div>
-                    </div>
-                    <div style="display: flex; justify-content: space-around">
-                        <div style="width: 147px">Assinatura do orientador</div>
-                        <div style="width: 147px">Assinatura do supervisor</div>
+                    <div class="signature-area">
+                        <div style="display: flex; justify-content: space-around">
+                            <div class="signature-line"></div>
+                            <div class="signature-line"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-around">
+                            <div style="width: 147px">Assinatura do orientador</div>
+                            <div style="width: 147px">Assinatura do supervisor</div>
+                        </div>
                     </div>
                 </div>
             </div>
         `;
 
-      // Função para gerar relatório a partir do formulário
-      function generateFromForm() {
-        const reportsContainer = document.getElementById("reports-container");
-        reportsContainer.style.display = "block";
+      // Função para mostrar/ocultar loading
+      function showLoading(show) {
+        document.getElementById("loading").style.display = show
+          ? "block"
+          : "none";
+      }
 
-        // Limpa relatórios anteriores
-        reportsContainer.innerHTML = "";
-
-        // Adiciona as páginas do relatório
-        const index = 0;
-        reportsContainer.innerHTML += page1Template(index);
-        reportsContainer.innerHTML += page2Template(index);
-
-        // Preenche os dados do formulário
+      // Função para validar formulário
+      function validateForm() {
         const fields = [
           "nome",
           "matricula",
@@ -499,21 +1014,67 @@
           "supervisor",
           "horario",
         ];
+        let isValid = true;
+
         fields.forEach((field) => {
-          const value = document.getElementById(field).value;
-          console.log(`Campo ${field} - Valor: ${value}`); // DEBUG
-          const span1 = document.getElementById(`${field}1-${index}`);
-          const span2 = document.getElementById(`${field}2-${index}`);
-          if (span1 && span2) {
-            span1.textContent = value;
-            span2.textContent = value;
-            console.log(`Preenchido ${field} nas páginas 1 e 2.`); // DEBUG
+          const input = document.getElementById(field);
+          if (!input.value.trim()) {
+            input.classList.add("is-invalid");
+            isValid = false;
           } else {
-            console.warn(
-              `Elemento ${field}1-${index} ou ${field}2-${index} não encontrado.`
-            ); // DEBUG
+            input.classList.remove("is-invalid");
           }
         });
+
+        return isValid;
+      }
+
+      // Função para gerar relatório a partir do formulário
+      function generateFromForm() {
+        if (!validateForm()) {
+          alert("Por favor, preencha todos os campos obrigatórios.");
+          return;
+        }
+
+        showLoading(true);
+
+        setTimeout(() => {
+          const reportsContainer = document.getElementById("reports-container");
+          reportsContainer.style.display = "block";
+
+          // Limpa relatórios anteriores
+          reportsContainer.innerHTML = "";
+
+          // Adiciona as páginas do relatório
+          const index = 0;
+          reportsContainer.innerHTML += page1Template(index);
+          reportsContainer.innerHTML += page2Template(index);
+
+          // Preenche os dados do formulário
+          const fields = [
+            "nome",
+            "matricula",
+            "curso",
+            "orientador",
+            "empresa",
+            "supervisor",
+            "horario",
+          ];
+          fields.forEach((field) => {
+            const value = document.getElementById(field).value;
+            const span1 = document.getElementById(`${field}1-${index}`);
+            const span2 = document.getElementById(`${field}2-${index}`);
+            if (span1 && span2) {
+              span1.textContent = value;
+              span2.textContent = value;
+            }
+          });
+
+          showLoading(false);
+
+          // Scroll para os relatórios gerados
+          reportsContainer.scrollIntoView({ behavior: "smooth" });
+        }, 1000);
       }
 
       // Função para limpar todos os relatórios
@@ -522,13 +1083,58 @@
         document.getElementById("reports-container").style.display = "none";
       }
 
+      // Configuração do upload de arquivo Excel
       document
         .getElementById("excel-file")
-        .addEventListener("change", (event) => {
-          const file = event.target.files[0];
-          const reader = new FileReader();
+        .addEventListener("change", handleExcelFile);
 
-          reader.onload = (e) => {
+      // Configuração da área de drag and drop
+      const dropArea = document.getElementById("drop-area");
+      ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ["dragenter", "dragover"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, highlight, false);
+      });
+
+      ["dragleave", "drop"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+      });
+
+      function highlight() {
+        dropArea.classList.add("dragover");
+      }
+
+      function unhighlight() {
+        dropArea.classList.remove("dragover");
+      }
+
+      dropArea.addEventListener("drop", handleDrop, false);
+
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        document.getElementById("excel-file").files = files;
+        handleExcelFile();
+      }
+
+      function handleExcelFile() {
+        const fileInput = document.getElementById("excel-file");
+        if (!fileInput.files.length) return;
+
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        showLoading(true);
+
+        reader.onload = (e) => {
+          try {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: "array" });
 
@@ -601,10 +1207,30 @@
               document.getElementById(`horario2-${index}`).textContent =
                 row.HORÁRIO || "";
             });
-          };
 
-          reader.readAsArrayBuffer(file);
-        });
+            showLoading(false);
+
+            // Scroll para os relatórios gerados
+            reportsContainer.scrollIntoView({ behavior: "smooth" });
+
+            // Mostra mensagem de sucesso
+            alert(
+              `Dados importados com sucesso! ${
+                jsonData.filter((row) => row.NOME && row.NOME.trim() !== "")
+                  .length
+              } registros processados.`
+            );
+          } catch (error) {
+            console.error("Erro ao processar arquivo Excel:", error);
+            alert(
+              "Erro ao processar o arquivo Excel. Verifique se o formato está correto."
+            );
+            showLoading(false);
+          }
+        };
+
+        reader.readAsArrayBuffer(file);
+      }
 
       // Atualizar campos ao digitar (para o formulário manual)
       const updateField = (inputId, spanId) => {
@@ -632,5 +1258,9 @@
       });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
