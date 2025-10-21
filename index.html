@@ -323,6 +323,59 @@
         color: #333;
       }
 
+      .download-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        padding: 40px;
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+        transition: transform 0.3s ease;
+      }
+
+      .download-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .file-icon {
+        font-size: 64px;
+        color: #4a6ee0;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 24px;
+      }
+
+      .description {
+        color: #666;
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+
+      .file-details {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 25px;
+        text-align: left;
+      }
+
+      .file-details p {
+        margin: 8px 0;
+        color: #555;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .file-details span {
+        font-weight: 600;
+        color: #333;
+      }
+
       .download-btn {
         display: inline-flex;
         align-items: center;
@@ -446,10 +499,16 @@
         <div class="download-card">
           <div class="file-icon">📊</div>
           <h1>Modelo de Visitas</h1>
+          <p class="description">
+            Baixe o modelo de relatório de visitas para preenchimento. Este
+            arquivo será utilizado para registrar as informações das visitas
+            realizadas.
+          </p>
 
           <div class="file-details">
             <p>Nome do arquivo: <span>VISITAS - MODELO.xlsx</span></p>
             <p>Tipo: <span>Planilha Excel</span></p>
+            <p>Tamanho aproximado: <span>~150 KB</span></p>
           </div>
 
           <button class="download-btn" id="downloadBtn">
@@ -469,10 +528,8 @@
               // Criar um elemento <a> temporário para o download
               const link = document.createElement("a");
 
-              // Usar o arquivo fornecido como base64
-              // Em um cenário real, você teria o arquivo disponível em seu servidor
-              // Aqui estamos simulando o download com o nome correto
-              link.href = "gLag-VISITAS+-+DIREITO+(1)(1)(2).xlsx"; // Arquivo atual
+              // Usar o arquivo que está na pasta do projeto
+              link.href = "./VISITAS - MODELO.xlsx"; // Arquivo atual na pasta do projeto
               link.download = "VISITAS - MODELO.xlsx"; // Nome correto para download
 
               document.body.appendChild(link);
