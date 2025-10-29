@@ -459,7 +459,7 @@
                     </p>
                     <div class="cabecalho">
                         <p>
-                            <b>NOME DO ESTAGIÁRIO:</b> <span id="nome1-${index}"></span><b>MATRÍCULA:</b>
+                            <b>NOME DO ESTAGIÁRIO:</b> <span id="nome1-${index}"></span>&nbsp;<b>MATRÍCULA:</b>
                             <span id="matricula1-${index}"></span>
                         </p>
                         <p>
@@ -635,7 +635,7 @@
                         </p>
                         <br />
                         <p>
-                            <b>NOME DO ESTAGIÁRIO:</b> <span id="nome2-${index}"></span><b>MATRÍCULA:</b>
+                            <b>NOME DO ESTAGIÁRIO:</b> <span id="nome2-${index}"></span>&nbsp;<b>MATRÍCULA:</b>
                             <span id="matricula2-${index}"></span>
                         </p>
                         <p>
@@ -810,6 +810,15 @@
                 "TELEFONE",
               ],
               range: 1, // Pula a linha de cabeçalho
+            });
+
+            // Ordenar os dados por nome em ordem alfabética
+            jsonData.sort((a, b) => {
+              const nomeA = (a.NOME || "").toUpperCase();
+              const nomeB = (b.NOME || "").toUpperCase();
+              if (nomeA < nomeB) return -1;
+              if (nomeA > nomeB) return 1;
+              return 0;
             });
 
             const reportsContainer =
